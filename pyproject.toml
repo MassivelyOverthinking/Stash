@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Stash"
+version = "0.0.1"
+description = "A memory optimization tool designed to lessen Python class overhead"
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "LICENSE" }
+authors = [
+    {name = "HysingerDev", email = "HysingerDev@gmail.com"}
+]
+requires-python = ">=3.8"
+
+keywords = [
+    "API",
+    "async",
+    "uptime",
+    "monitoring",
+    "python",
+    "latency",
+    "alerts",
+    "endpoints",
+    "status checker",
+    "endpoint monitor",
+    "health checks",
+    "observability",
+    "reliability"
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Internet",
+    "Topic :: System :: Logging",
+    "Topic :: System :: Networking :: Monitoring",
+    "Topic :: Utilities"
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = []
+
+[project.urls]
+Homepage = ""
+Documentation = ""
+Source = ""
+Issues = ""
