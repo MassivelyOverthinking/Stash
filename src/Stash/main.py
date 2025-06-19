@@ -2,6 +2,8 @@
 
 from typing import Type, Callable
 
+from src.Stash.Classes import create_tuplex_cls, create_slots_cls
+
 #-------------------- Main Application --------------------
 
 def Stash(Frozen: bool = False) -> Callable[[Type], Type]:
@@ -10,9 +12,9 @@ def Stash(Frozen: bool = False) -> Callable[[Type], Type]:
 
     def wrapper(cls: Type) -> Type:
         if Frozen:
-            return  # Not specified yet (Class-type)
+            return  create_tuplex_cls(cls)
         else:
-            return  # Not specified yet (Class-type)
+            return  create_slots_cls(cls)
     
     return wrapper
     
