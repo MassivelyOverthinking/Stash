@@ -2,7 +2,7 @@
 
 from typing import Type
 from collections import namedtuple
-from src.Stash.Utils import check_cls
+from src.Stash.Utils import check_cls, check_metadata
 
 import types
 
@@ -20,5 +20,7 @@ def create_tuplex_cls(cls: Type) -> Type:
     for name, attr in cls.__dict__.items():
         if isinstance(attr, types.FunctionType) and not name.startswith("__"):
             setattr(new_class, name, attr)
+
+    check_metadata(cls, new_class)
 
     return new_class

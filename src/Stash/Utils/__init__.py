@@ -1,10 +1,10 @@
 #-------------------- Imports --------------------
 
-from src.Stash.Utils.utility import check_cls
+from src.Stash.Utils.utility import check_cls, check_metadata
 
 
 #-------------------- Package Management --------------------
 
-__all__ = ["check_cls"]
+__all__ = ["check_cls", "check_metadata"]
 __version__ = "0.0.1"
 __author__ = "HysingerDev"
