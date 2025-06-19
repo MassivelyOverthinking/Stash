@@ -1,6 +1,6 @@
 #-------------------- Imports --------------------
 
-import inspect
+import types
 
 #-------------------- Testing Suite --------------------
 
@@ -50,5 +50,7 @@ tc2 = TestClass2(
     grades= [60, 65, 75, 55, 60],
     is_active=False
 )
+
+types.new_class()
 
 print(TestClass1.__annotations__)

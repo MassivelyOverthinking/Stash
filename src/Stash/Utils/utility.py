@@ -19,5 +19,7 @@ def check_cls(cls: Type) -> list[str]:
 def check_metadata(source_cls: Type, target_cls: Type):
     for attr in ("__doc__", "__module__", "__annotations__", "__qualname__"):
         if hasattr(source_cls, attr):
-            setattr(target_cls, attr, getattr(source_cls, attr))
+            value = getattr(source_cls, attr, None)
+            if value is not None:
+                setattr(target_cls, attr, value)
         
