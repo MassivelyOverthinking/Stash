@@ -11,8 +11,11 @@ def Stash(Frozen: bool = False, Allow_fallback: bool = False, Preserve: List[str
         raise TypeError(f"Parameter 'Frozen' must be of Type: Boolean, not {type(Frozen).__name__}'")
     if not isinstance(Allow_fallback, bool):
         raise TypeError(f"Parameter 'Allow_fallback' must be of Type: Boolean, not {type(Allow_fallback).__name__}")
-    if Preserve is not None and not isinstance(Preserve, list):
-        raise TypeError(f"Parameter 'Preserve' must be of Type: List[str], not {type(Preserve).__name__}")
+    if Preserve is not None:
+        if not isinstance(Preserve, list):
+            raise TypeError(f"Parameter 'Preserve' must be of Type: List[str], not {type(Preserve).__name__}")
+        if not all(isinstance(item, str) for item in Preserve):
+            raise TypeError(f"All items in 'Preserve' must be of Type: str")
 
     def wrapper(cls: Type) -> Type:
         if Frozen:

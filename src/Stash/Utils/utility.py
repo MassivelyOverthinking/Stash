@@ -52,7 +52,7 @@ def preserve_methods(source_cls: Type, target_cls: Type, preserve: Optional[List
         else:
             warnings.warn(
                 f"Attribute {attr} in class {source_cls.__name__} is not a method or descriptor."
-                f"Only methods, staticmethods, classmethods, properties are presserved",
+                f"Only methods, staticmethods, classmethods, properties are preserved",
                 UserWarning
             )
         
