@@ -6,8 +6,8 @@ from src.Stash.Utils import check_cls, check_metadata
 
 #-------------------- Slots Class (Mutable) --------------------
 
-def create_slots_cls(cls: Type) -> Type:
-    fields = check_cls(cls)
+def create_slots_cls(cls: Type, allow_fallback: bool) -> Type:
+    fields = check_cls(cls, allow_fallback)
 
     class_dict = dict(cls.__dict__)
     class_dict["__slots__"] = tuple(fields)

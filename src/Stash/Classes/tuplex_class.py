@@ -8,8 +8,8 @@ import types
 
 #-------------------- Tuplex Class (Immutable) --------------------
 
-def create_tuplex_cls(cls: Type) -> Type:
-    fields = check_cls(cls)
+def create_tuplex_cls(cls: Type, allow_fallback: bool) -> Type:
+    fields = check_cls(cls, allow_fallback)
 
     NTBase = namedtuple(f"{cls.__name__}", fields)
 

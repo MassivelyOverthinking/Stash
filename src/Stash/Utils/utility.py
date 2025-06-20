@@ -1,20 +1,25 @@
 #-------------------- Imports --------------------
 
-from typing import Type
+from typing import Type, List
 import inspect
 
 #-------------------- Utility Functions --------------------
 
-def check_cls(cls: Type) -> list[str]:
-    if hasattr(cls, "__annotations__"):
-        fields = list(cls.__annotations__.keys())
-    elif hasattr(cls, "__init__"):
-        sig = inspect.signature(cls.__init__)
-        fields = list([param.name for param in list(sig.parameters.values())[1:]])
-    else:
-        raise ValueError(f"Class {cls.__name__} does not contain '__annotations__' or '__init__' methods")
+def check_cls(cls: Type, allow_fallback: bool) -> List[str]:
+    if hasattr(cls, "__annotations__") and cls.__annotations__:
+        return list(cls.__annotations__.keys())
     
-    return fields
+    elif allow_fallback and callable(getattr(cls, "__init__", None)):
+        sig = inspect.signature(cls.__init__)
+        params = list(sig.parameters.values())[1:]
+        
+        if not params:
+            raise ValueError(f"Class {cls.__name__} has no __init__ parameters to infer fields from.")
+        
+        return [param.name for param in params]
+    else:
+        raise ValueError(f"Class {cls.__name__} must include type annotations to produce fields")
+    
 
 def check_metadata(source_cls: Type, target_cls: Type):
     for attr in ("__doc__", "__module__", "__annotations__", "__qualname__"):

@@ -51,6 +51,6 @@ tc2 = TestClass2(
     is_active=False
 )
 
-types.new_class()
 
-print(TestClass1.__annotations__)
+
+print(TestClass1.__mro__)
