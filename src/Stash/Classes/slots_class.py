@@ -1,12 +1,12 @@
 #-------------------- Imports --------------------
 
-from typing import Type
+from typing import Type, List, Optional
 from collections import namedtuple
-from src.Stash.Utils import check_cls, check_metadata
+from src.Stash.Utils import check_cls, check_metadata, preserve_methods
 
 #-------------------- Slots Class (Mutable) --------------------
 
-def create_slots_cls(cls: Type, allow_fallback: bool) -> Type:
+def create_slots_cls(cls: Type, allow_fallback: bool, preserve: Optional[List[str]]) -> Type:
     fields = check_cls(cls, allow_fallback)
 
     class_dict = dict(cls.__dict__)
@@ -20,5 +20,7 @@ def create_slots_cls(cls: Type, allow_fallback: bool) -> Type:
     new_class = type(cls.__name__, cls.__bases__, class_dict)
     
     check_metadata(cls, new_class)
+
+    preserve_methods(cls, new_class, preserve)
 
     return new_class

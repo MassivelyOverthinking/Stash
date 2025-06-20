@@ -1,14 +1,14 @@
 #-------------------- Imports --------------------
 
-from typing import Type
+from typing import Type, Optional, List
 from collections import namedtuple
-from src.Stash.Utils import check_cls, check_metadata
+from src.Stash.Utils import check_cls, check_metadata, preserve_methods
 
 import types
 
 #-------------------- Tuplex Class (Immutable) --------------------
 
-def create_tuplex_cls(cls: Type, allow_fallback: bool) -> Type:
+def create_tuplex_cls(cls: Type, allow_fallback: bool, preserve: Optional[List[str]]) -> Type:
     fields = check_cls(cls, allow_fallback)
 
     NTBase = namedtuple(f"{cls.__name__}", fields)
@@ -22,5 +22,7 @@ def create_tuplex_cls(cls: Type, allow_fallback: bool) -> Type:
             setattr(new_class, name, attr)
 
     check_metadata(cls, new_class)
+
+    preserve_methods(cls, new_class, preserve)
 
     return new_class
