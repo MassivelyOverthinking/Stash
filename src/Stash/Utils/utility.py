@@ -29,7 +29,7 @@ def analyze_fields(cls: Type, allow_fallback: bool) -> List[FieldInfo]:
         return get_values_from_anno(cls)
     
     elif allow_fallback and callable(getattr(cls, "__init__", None)):
-        return get_valuess_from_init(cls)
+        return get_values_from_init(cls)
             
     else:
         raise ValueError(f"Class {cls.__name__} must include type annotations to produce fields")
