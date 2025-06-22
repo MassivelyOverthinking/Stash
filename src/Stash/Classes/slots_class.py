@@ -1,7 +1,6 @@
 #-------------------- Imports --------------------
 
 from typing import Type, List, Optional
-from collections import namedtuple
 from src.Stash.Utils import check_cls, check_metadata, preserve_methods
 
 #-------------------- Slots Class (Mutable) --------------------

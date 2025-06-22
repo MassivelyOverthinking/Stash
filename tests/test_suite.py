@@ -1,56 +1,74 @@
 #-------------------- Imports --------------------
 
 import types
+import typing
+import inspect
+from typing import Optional
+from dataclasses import dataclass
 
 #-------------------- Testing Suite --------------------
 
-class TestClass1():
-    """
-    Random Docstring created for testing purposes.
-    """
+@dataclass
+class FieldInfo():
+    name: str
+    value: any
+    has_default: bool
+    default_value: Optional[any]
+
+class TestField():
     name: str
     age: int
     grades: list[int]
     is_active: bool
 
-    def __init__(self, name: str, age: int, grades: list[int], is_active: bool):
-        self.name = name
-        self.age = age
-        self.grades = grades
-        self.is_active = is_active
+    def __init__(self, name: str, age: int = None, grades: list[int] = [], is_active: bool = False):
+        pass
 
-    def get_average(self):
-        return round(sum(self.grades) / len(self.grades), 2)
-    
-class TestClass2():
-    """
-    Random Docstring created for testing purposes.
-    """
-    __slots__ = ("name", "age", "grades", "is_active")
+def random_func(x: int, y: int = 10):
+    return x * y
 
-    def __init__(self, name: str, age: int, grades: list[int], is_active: bool):
-        self.name = name
-        self.age = age
-        self.grades = grades
-        self.is_active = is_active
+sig = inspect.signature(random_func)
+sig2 = inspect.signature(TestField)
+# print(sig)
 
-    def get_average(self):
-        return round(sum(self.grades) / len(self.grades), 2)
-        
-tc1 = TestClass1(
-    name="Renoir Dessendre",
-    age=50,
-    grades= [50, 60, 70, 80, 90],
-    is_active=True
-)
+# for param_name, param in sig.parameters.items():
+#     print(f"Parameter name: {param_name}")
+#     print(f"Paramter kind: {param.kind}")
+#     print(f"Default Value: {param.default if param.default is not inspect.Parameter.empty else 'No Default'}")
+#     print(f"Annotation: {param.annotation if param.annotation is not inspect.Parameter.empty else 'No Annotation'}")
 
-tc2 = TestClass2(
-    name="Verso Dessendre",
-    age=31,
-    grades= [60, 65, 75, 55, 60],
-    is_active=False
-)
+def get_info(sig: inspect.Signature):
+    results = []
+    for param_name, param in sig.parameters.items():
+        results.append(FieldInfo(
+            name=param_name,
+            value=param.annotation,
+            has_default=param.default is not inspect.Parameter.empty,
+            default_value=param.default if param.default is not inspect.Parameter.empty else None
+        ))
+    return results
+
+def rebuild_class (name: str, fields: list[FieldInfo]):
+    annotations = {}
+    class_dict = {}
+
+    for field in fields:
+        annotations[field.name] = field.value
+        if field.has_default:
+            class_dict[field.name] = field.default_value
+
+    class_dict["__annotations__"] = annotations
+
+    return type(name, (object,), class_dict)
 
 
+print("\n---------- Fields ----------")
+results = get_info(sig2)
+new_cls = rebuild_class("New_Class", results)
+sig3 = inspect.signature(new_cls.__init__)
 
-print(TestClass1.__mro__)
+for param_name, param in sig3.parameters.items():
+    print(f"Paramter name: {param_name}")
+    print(f"Paramter kind: {param.kind}")
+    print(f"Default Value: {param.default if param.default is not inspect.Parameter.empty else 'No Default'}")
+    print(f"Annotation: {param.annotation if param.annotation is not inspect.Parameter.empty else 'No Annotation'}")
