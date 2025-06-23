@@ -1,8 +1,8 @@
 #-------------------- Imports --------------------
 
-from typing import Type, Callable, List, Optional
+from typing import Type, Callable, List
 
-from src.Stash.Classes import create_tuplex_cls, create_slots_cls
+from src.Stash.Classes import create_slots_cls
 
 #-------------------- Main Application --------------------
 
@@ -19,7 +19,7 @@ def Stash(Frozen: bool = False, Allow_fallback: bool = False, Preserve: List[str
 
     def wrapper(cls: Type) -> Type:
         if Frozen:
-            return  create_tuplex_cls(cls, Allow_fallback, Preserve)
+            raise NotImplementedError("Immutable class generation is currently disabled")
         else:
             return  create_slots_cls(cls, Allow_fallback, Preserve)
     
