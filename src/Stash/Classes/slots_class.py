@@ -25,6 +25,8 @@ def create_slots_cls(cls: Type, allow_fallback: bool, preserve: Optional[List[st
             class_dict[field.value_name] = field.default_value
 
     new_class = type(cls.__name__, cls.__bases__, class_dict)
+
+    new_class.__foundation__ = cls
     
     check_metadata(cls, new_class)
     preserve_methods(cls, new_class, preserve)
