@@ -3,6 +3,7 @@
 from typing import Type, Callable, List
 
 from src.Stash.Classes import create_slots_cls
+from src.Stash.Cache import check_cache_value, return_cache_value, add_to_cache
 
 #-------------------- Main Application --------------------
 
@@ -21,7 +22,15 @@ def Stash(Frozen: bool = False, Allow_fallback: bool = False, Preserve: List[str
         if Frozen:
             raise NotImplementedError("Immutable class generation is currently disabled")
         else:
-            return  create_slots_cls(cls, Allow_fallback, Preserve)
-    
+            key = (cls, Allow_fallback, tuple(Preserve) if Preserve else ())
+
+            if check_cache_value(key):
+                return return_cache_value(key)
+
+            new_cls = create_slots_cls(cls, Allow_fallback, Preserve)
+            add_to_cache(key, new_cls)
+
+            return new_cls
+
     return wrapper
     
