@@ -18,7 +18,6 @@ def Stash(Allow_fallback: bool = False, Preserve: List[str] = None) -> Callable[
 
     def wrapper(cls: Type) -> Type:
 
-
         key = (cls.__name__, cls.__module__, cls.__qualname__, id(cls))
 
         if check_cache_value(key):

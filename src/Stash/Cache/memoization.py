@@ -26,8 +26,12 @@ class CacheEntry():
 
 stash_cache: "OrderedDict[Any, CacheEntry]" = OrderedDict()
 
+
 def add_to_cache(key: Any, value: Any, ttl: int = DEFAULT_TTL) -> None:
     with CACHING_LOCK:
+
+        delete_expired()
+
         if key in stash_cache:
             del stash_cache[key]
 
@@ -35,6 +39,7 @@ def add_to_cache(key: Any, value: Any, ttl: int = DEFAULT_TTL) -> None:
             stash_cache.popitem(last=False)
 
         stash_cache[key] = CacheEntry(value, ttl)
+
 
 def check_cache_value(key: Any) -> bool:
     with CACHING_LOCK:
@@ -45,12 +50,26 @@ def check_cache_value(key: Any) -> bool:
             del stash_cache[key]
             return False
         return True
+    
 
 def return_cache_value(key: Any) -> Optional[Type]:
-    if check_cache_value(key):
-        stash_cache.move_to_end(key)
-        return stash_cache[key].value
-    return None
+    with CACHING_LOCK:
+        if check_cache_value(key):
+            stash_cache.move_to_end(key)
+            return stash_cache[key].value
+        return None
+
+
+def delete_expired():
+    with CACHING_LOCK:
+        keys_to_delete = []
+        for key, value in list(stash_cache.items()):
+            if value.is_expired():
+                keys_to_delete.append(key)
+            
+        for k in keys_to_delete:
+            del stash_cache[k]
+
 
 def clear_cache():
     with CACHING_LOCK:

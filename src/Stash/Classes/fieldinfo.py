@@ -1,13 +1,13 @@
 #-------------------- Imports --------------------
 
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any
 
 #-------------------- FieldInfos Class --------------------
 
 @dataclass
 class FieldInfo():
     value_name: str
-    type_annotation: any
+    type_annotation: Any
     has_default: bool
-    default_value: Optional[any]
+    default_value: Optional[Any]
