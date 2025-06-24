@@ -1,13 +1,15 @@
 #-------------------- Imports --------------------
 
 import time
+import threading
 from typing import Type, Optional, Any
 from collections import OrderedDict
 
 #-------------------- Caching Configuration --------------------
 
-MAX_CACHE_SIZE = 128
+MAX_CACHE_SIZE = 68
 DEFAULT_TTL = 150
+CACHING_LOCK = threading.Lock()
 
 #-------------------- Caching Mechanism --------------------
 
@@ -25,22 +27,24 @@ class CacheEntry():
 stash_cache: "OrderedDict[Any, CacheEntry]" = OrderedDict()
 
 def add_to_cache(key: Any, value: Any, ttl: int = DEFAULT_TTL) -> None:
-    if key in stash_cache:
-        del stash_cache[key]
+    with CACHING_LOCK:
+        if key in stash_cache:
+            del stash_cache[key]
 
-    while len(stash_cache) >= MAX_CACHE_SIZE:
-        stash_cache.popitem(last=False)
+        while len(stash_cache) >= MAX_CACHE_SIZE:
+            stash_cache.popitem(last=False)
 
-    stash_cache[key] = CacheEntry(value, ttl)
+        stash_cache[key] = CacheEntry(value, ttl)
 
 def check_cache_value(key: Any) -> bool:
-    entry = stash_cache.get(key)
-    if entry is None:
-        return False
-    if entry.is_expired():
-        del stash_cache[key]
-        return False
-    return True
+    with CACHING_LOCK:
+        entry = stash_cache.get(key)
+        if entry is None:
+            return False
+        if entry.is_expired():
+            del stash_cache[key]
+            return False
+        return True
 
 def return_cache_value(key: Any) -> Optional[Type]:
     if check_cache_value(key):
@@ -49,4 +53,5 @@ def return_cache_value(key: Any) -> Optional[Type]:
     return None
 
 def clear_cache():
-    stash_cache.clear()
+    with CACHING_LOCK:
+        stash_cache.clear()

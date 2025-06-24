@@ -51,7 +51,7 @@ def preserve_methods(source_cls: Type, target_cls: Type, preserve: Optional[List
                 UserWarning
             )
 
-def get_values_from_anno(cls: Type) -> list[FieldInfo]:
+def get_values_from_anno(cls: Type) -> List[FieldInfo]:
     results = []
     for param_name, param_value in cls.__annotations__.items():
         if param_name in cls.__dict__:
@@ -69,7 +69,7 @@ def get_values_from_anno(cls: Type) -> list[FieldInfo]:
     
     return results
 
-def get_values_from_init(cls: Type) -> list[FieldInfo]:
+def get_values_from_init(cls: Type) -> List[FieldInfo]:
     results = []
     sig = inspect.signature(cls.__init__)
     params = list(sig.parameters.values())[1:]
