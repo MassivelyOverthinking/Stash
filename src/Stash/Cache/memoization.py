@@ -8,7 +8,7 @@ from collections import OrderedDict, abc
 #-------------------- Caching Configuration --------------------
 
 MAX_CACHE_SIZE = 68
-DEFAULT_TTL = 150
+DEFAULT_TTL = 600
 CACHING_LOCK = threading.RLock()
 
 #-------------------- Caching Mechanism --------------------
