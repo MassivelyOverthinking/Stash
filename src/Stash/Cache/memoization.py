@@ -4,6 +4,7 @@ import time
 import threading
 from typing import Type, Optional, Any
 from collections import OrderedDict, abc
+from src.Stash.Classes.cacheconfig import CacheConfig
 
 #-------------------- Caching Configuration --------------------
 
@@ -73,3 +74,12 @@ def delete_expired():
 def clear_cache():
     with CACHING_LOCK:
         stash_cache.clear()
+
+
+class CacheManager():
+    __slots__ = ("config", "cache", "lock")
+
+    def __init__(self, config: Optional[CacheConfig] = None):
+        self.config = config or CacheConfig()
+        self.cache: "OrderedDict[Any, CacheEntry]" = OrderedDict()
+        self.lock = threading.RLock()
