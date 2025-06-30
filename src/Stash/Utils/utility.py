@@ -1,30 +1,17 @@
 #-------------------- Imports --------------------
 
-from typing import Type, List, Optional
+from typing import Type, List, Optional, Callable
 from src.Stash.Classes import FieldInfo
-import inspect
 import warnings
 import types
+import sys
 
 #-------------------- Utility Functions --------------------
-    
-def analyze_fields(cls: Type, allow_fallback: bool) -> List[FieldInfo]:
-    if hasattr(cls, "__annotations__",) and cls.__annotations__:
-        return get_values_from_anno(cls)
-    
-    elif allow_fallback and callable(getattr(cls, "__init__", None)):
-        return get_values_from_init(cls)
-            
-    else:
-        raise ValueError(f"Class {cls.__name__} must include type annotations to produce fields")
-
 
 def check_metadata(source_cls: Type, target_cls: Type):
     for attr in ("__doc__", "__module__", "__annotations__", "__qualname__"):
         if hasattr(source_cls, attr):
-            value = getattr(source_cls, attr, None)
-            if value is not None:
-                setattr(target_cls, attr, value)
+            setattr(target_cls, attr, getattr(source_cls, attr))
 
 
 def preserve_methods(source_cls: Type, target_cls: Type, preserve: Optional[List[str]]) -> None:
@@ -53,36 +40,55 @@ def preserve_methods(source_cls: Type, target_cls: Type, preserve: Optional[List
 
 def get_values_from_anno(cls: Type) -> List[FieldInfo]:
     results = []
-    for param_name, param_value in cls.__annotations__.items():
-        if param_name in cls.__dict__:
-            has_default = True
-            default_value = cls.__dict__[param_name]
-        else:
-            has_default = False
-            default_value = None
+    for param, anno in cls.__annotations__.items():
+        default = cls.__dict__.get(param, None)
         results.append(FieldInfo(
-            value_name=param_name,
-            type_annotation=param_value,
-            has_default=has_default,
-            default_value=default_value
+            value_name=param,
+            type_annotation=anno,
+            has_default=param in cls.__dict__,
+            default_value=default
         ))
-    
+        
     return results
 
-def get_values_from_init(cls: Type) -> List[FieldInfo]:
-    results = []
-    sig = inspect.signature(cls.__init__)
-    params = list(sig.parameters.values())[1:]
-    for param in params:
-        results.append(FieldInfo(
-            value_name=param.name,
-            type_annotation=param.annotation,
-            has_default=param.default is not inspect.Signature.empty,
-            default_value=param.default if param.default is not inspect.Signature.empty else None
-        ))
+#-------------------- Dynamic Method Creators --------------------
 
-    if not results:
-        raise ValueError(f"Class {cls.__name__} has no __init__ parameters to infer fields from.")
-    
-    return results
+def create_init(fields_info: List[FieldInfo], freeze: bool) -> Callable:
+    def __init__(self, *args, **kwargs):
+        for i, field in enumerate(fields_info):
+            if field.value_name in kwargs:
+                value = kwargs[field.value_name]
+            elif i < len(args):
+                value = args[i]
+            elif field.has_default:
+                value = field.default_value
+            else:
+                raise TypeError(f"Missing required argument: {field.value_name}")
+
+            if field.type_annotation is str and isinstance(value, str):
+                value = sys.intern(value)
+            setattr(self, field.value_name, value)
+        if freeze:
+            object.__setattr__(self, "_frozen", True)
+    return __init__
+
+def create_repr(class_name: str, field_info: List[FieldInfo]) -> Callable:
+    def __repr__(self):
+        values = ", ".join(f"{f.value_name}={repr(getattr(self, f.value_name))}" for f in field_info)
+        return f"{class_name}({values})"
+    return __repr__
+
+def create_eq(field_info: List[FieldInfo]) -> Callable:
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return all(getattr(self, f.value_name) == getattr(other, f.value_name) for f in field_info)
+    return __eq__
+
+def create_frozen_setattr() -> Callable:
+    def __setattr__(self, key, value):
+        if getattr(self, "_frozen", False):
+            raise AttributeError("Cannot modify frozen variables")
+        object.__setattr__(self, key, value)
+    return __setattr__
         
