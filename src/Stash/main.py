@@ -13,6 +13,24 @@ def Stash(
         config: Optional[CacheConfig] = None
     ) -> Callable[[Type], Type]:
 
+    """
+    A Python class-decorator designed for memory optimization by dynamically generating a __slots__-bassed class.
+
+    Decorator reduces general memory overhead by eliminating __dict__,
+    and automatically generating __init__, __repr__, __eq__ methods.
+
+    Args:
+        Freeze (bool): If True, prevents attribute mutation after instantiation.
+        Preserve (list[str]): List of individual methods preserved from teh original class.
+        Config (Optional[CacheConfig]): Optional configuration model for initialising caching functionality.
+
+    Returns:
+        Callable[[Type], Type]Dynamically creates a new class-object instead of initial class.
+
+    Exceptions:
+        TypeErrors: Raised if individual params are not of the correct Type. 
+    """
+
     if not isinstance(freeze, bool):
         raise TypeError(f"Paramater 'Freeze' must be of Type: Boolean, not {type(freeze).__name__}")
     if preserve is not None:

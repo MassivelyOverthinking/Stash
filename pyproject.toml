@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Stash"
+name = "stash"
 version = "0.0.1"
 description = "A memory optimization tool designed to lessen Python class overhead"
 readme = { file = "README.md", content-type = "text/markdown" }
@@ -14,19 +14,17 @@ authors = [
 requires-python = ">=3.8"
 
 keywords = [
-    "API",
-    "async",
-    "uptime",
+    "slots",
+    "memory optimization",
+    "performance",
     "monitoring",
     "python",
-    "latency",
-    "alerts",
-    "endpoints",
-    "status checker",
-    "endpoint monitor",
-    "health checks",
-    "observability",
-    "reliability"
+    "decorator",
+    "class",
+    "freeze",
+    "immutability",
+    "interning",
+    "lightweigh classes"
 ]
 
 classifiers = [
@@ -36,11 +34,15 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
-    "Topic :: Internet",
-    "Topic :: System :: Logging",
-    "Topic :: System :: Networking :: Monitoring",
-    "Topic :: Utilities"
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+    "Topic :: System :: System Administration"
+
 ]
 
 dependencies = []
