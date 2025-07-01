@@ -2,6 +2,7 @@
 
 from typing import List, Callable
 from src.Stash.Classes import FieldInfo
+from src.Stash.Errors import FreezeAttributeException
 import sys
 
 #-------------------- Dynamic Method Creation --------------------
@@ -44,6 +45,6 @@ def create_eq(field_info: List[FieldInfo]) -> Callable:
 def create_frozen_setattr() -> Callable:
     def __setattr__(self, key, value):
         if getattr(self, "_frozen", False):
-            raise AttributeError(f"Cannot modify {key}, instance is Frozen")
+            raise FreezeAttributeException(f"Cannot modify {key}, instance is Frozen")
         object.__setattr__(self, key, value)
     return __setattr__
