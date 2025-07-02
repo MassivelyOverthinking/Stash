@@ -106,6 +106,10 @@ example1 = Example(
     is_superhero=True
 )
 
-example1.smash()        # Succesfully runs and prints message
-example1.surrender()    # Does not exist as method wasn't preserved when creating new class.
+example1.smash()                # Succesfully runs and prints message
+
+try:                            # Raises AttributeError: Instance has no atribute 'surrender'
+    example1.surrender()
+except AttributeError as e:
+    print(f"Method missing {e}")
 ```

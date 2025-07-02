@@ -60,17 +60,17 @@ def conserve(method: Callable) -> Callable:
     """
     Method-decorator used to define class-functions that @Stash is required to preserve.
 
-    Used in conjuction with @Stash class-decorator in order to explicitly define which functions
+    Used in conjuction with @Stash class-decorator in order to explicitly mark which functions
     require preservation.
 
     Args:
-        @conserve requires no arguments.
+        No arguments required.
 
     Returns:
-        Callable: Preserves individual class-methods in the new __slots__-based class.
+        Callable: The decorator-method, marked for preservation in the new __slots__-based class.
 
     Exceptions:
-        No exceptions are currently raised. 
+        None. 
     """
 
     if isinstance(method, (staticmethod, classmethod)):
