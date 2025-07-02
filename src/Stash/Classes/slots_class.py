@@ -1,11 +1,11 @@
 #-------------------- Imports --------------------
 
 from typing import Type, List, Optional
-from src.Stash.Utils import check_metadata, preserve_methods, get_annotations, create_init, create_repr, create_eq, create_frozen_setattr
+from src.Stash.Utils import check_metadata, get_annotations, create_init, create_repr, create_eq, create_frozen_setattr, conserve_methods
 
 #-------------------- Slots Class (Mutable) --------------------
 
-def create_slots_cls(cls: Type, freeze: bool, preserve: Optional[List[str]]) -> Type:
+def create_slots_cls(cls: Type, freeze: bool) -> Type:
     fields_info = get_annotations(cls)
     slot_names = [field.value_name for field in fields_info]
 
@@ -32,6 +32,6 @@ def create_slots_cls(cls: Type, freeze: bool, preserve: Optional[List[str]]) -> 
     new_class.__foundation__ = cls
     
     check_metadata(cls, new_class)
-    preserve_methods(cls, new_class, preserve)
+    conserve_methods(cls, new_class)
 
     return new_class

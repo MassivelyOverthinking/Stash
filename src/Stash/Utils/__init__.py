@@ -1,13 +1,13 @@
 #-------------------- Imports --------------------
 
-from src.Stash.Utils.utility import check_metadata, preserve_methods, get_annotations
+from src.Stash.Utils.utility import check_metadata, get_annotations, conserve_methods
 from src.Stash.Utils.dynamic import create_init, create_repr, create_eq, create_frozen_setattr
 
 
 #-------------------- Package Management --------------------
 
 __all__ = ["check_metadata",
-           "preserve_methods",
+           "conserve_methods",
            "get_annotations",
            "create_init",
            "create_repr",

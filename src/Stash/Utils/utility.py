@@ -1,9 +1,8 @@
 #-------------------- Imports --------------------
 
-from typing import Type, List, Optional
+from typing import Type, List
 from src.Stash.Classes import FieldInfo
-import warnings
-import types
+from src.Stash.main import conserve
 
 #-------------------- Utility Functions --------------------
 
@@ -13,29 +12,16 @@ def check_metadata(source_cls: Type, target_cls: Type):
             setattr(target_cls, attr, getattr(source_cls, attr))
 
 
-def preserve_methods(source_cls: Type, target_cls: Type, preserve: Optional[List[str]]) -> None:
-    if preserve is None:
-        return
+def conserve_methods(source_cls: Type, target_cls: Type) -> None:
+    for attr_name in dir(source_cls):
+        attr = getattr(source_cls, attr_name)
 
-    for attr in preserve:
-        if attr not in source_cls.__dict__:
-            warnings.warn(
-                f"Attribute {attr} not found in class: {source_cls.__name__}."
-                f"Check for possible typos or unintended omissions",
-                UserWarning
-            )
-            continue
+        func = attr
+        if isinstance(attr, (staticmethod, classmethod)):
+            func = attr.__func__
+        if getattr(func, "_conserve", False):
+            setattr(target_cls, attr_name, attr)
 
-        attr_value = source_cls.__dict__[attr]
-
-        if isinstance(attr_value, (types.FunctionType, classmethod, staticmethod, property)):
-            setattr(target_cls, attr, attr_value)
-        else:
-            warnings.warn(
-                f"Attribute {attr} in class {source_cls.__name__} is not a method or descriptor."
-                f"Only methods, staticmethods, classmethods, properties are preserved",
-                UserWarning
-            )
 
 def get_annotations(cls: Type) -> List[FieldInfo]:
     results = []

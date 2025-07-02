@@ -5,11 +5,10 @@ from typing import Type, Callable, List
 from src.Stash.Classes import create_slots_cls
 from src.Stash.Cache import get_global_cache_manager
 
-#-------------------- Main Application --------------------
+#-------------------- Stash Decorator --------------------
 
 def Stash(
-        freeze: bool = False,
-        preserve: List[str] = None
+        freeze: bool = False
     ) -> Callable[[Type], Type]:
 
     """
@@ -31,11 +30,6 @@ def Stash(
 
     if not isinstance(freeze, bool):
         raise TypeError(f"Paramater 'Freeze' must be of Type: Boolean, not {type(freeze).__name__}")
-    if preserve is not None:
-        if not isinstance(preserve, list):
-            raise TypeError(f"Parameter 'Preserve' must be of Type: List[str], not {type(preserve).__name__}")
-        if not all(isinstance(item, str) for item in preserve):
-            raise TypeError(f"All items in 'Preserve' must be of Type: str")
     
     cache_manager = get_global_cache_manager()
 
@@ -45,18 +39,29 @@ def Stash(
             cls.__module__,
             cls.__qualname__,
             tuple(sorted(cls.__annotations__.items())),
-            freeze,
-            tuple(sorted(preserve or ()))
+            freeze
         )
 
         cached = cache_manager.get(key)
         if cached is not None:
             return cached
         
-        new_cls = create_slots_cls(cls, freeze, preserve)
+        new_cls = create_slots_cls(cls, freeze)
         cache_manager.add(key, new_cls)
 
         return new_cls
 
     return wrapper
+
+
+#-------------------- Conserve Decorator --------------------
+
+def conserve(method: Callable) -> Callable:
+    if isinstance(method, (staticmethod, classmethod)):
+        func = method.__func__
+        setattr(func, "_conserve", True)
+    else:
+        setattr(method, "_conserve", True)
+    return method
+    
     
