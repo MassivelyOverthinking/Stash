@@ -11,10 +11,12 @@ def create_slots_cls(cls: Type, freeze: bool) -> Type:
 
     class_dict = {"__slots__": tuple(slot_names) + (("_frozen",) if freeze else ())}
 
+    # Handles and assigns default values to respective variables.
     for field in fields_info:
         if field.has_default:
             class_dict[field.value_name] = field.default_value
 
+    # Dynamically creates relevant dunder-methods and add them to final class_dict.
     class_dict["__init__"] = create_init(fields_info, freeze)
     class_dict["__repr__"] = create_repr(cls.__name__, fields_info)
     class_dict["__eq__"] = create_eq(fields_info)
@@ -40,7 +42,7 @@ def create_slots_cls(cls: Type, freeze: bool) -> Type:
     new_class = type(cls.__name__, cls.__bases__, class_dict)
     new_class.__foundation__ = cls
     
-    check_metadata(cls, new_class)
-    conserve_methods(cls, new_class)
+    check_metadata(cls, new_class)      # Adds metadata to final class
+    conserve_methods(cls, new_class)    # Ensures inherited methods are preserved
 
     return new_class

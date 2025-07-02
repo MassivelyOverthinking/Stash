@@ -32,7 +32,7 @@ poetry add Stash
 conda install Stash 
 ```
 
-## #️⃣ Code Example
+## #️⃣ Quickstart Example
 
 ```python
 from Stash import Stash
@@ -42,8 +42,6 @@ class Example():
     name: str
     age: 
     is_single: bool
-
-# An __init__-method is automatically generated similar to @dataclass
 
 example1 = Example(
     name="Tony Stark",
@@ -55,6 +53,7 @@ print(example1.name)        # Tony Stark
 print(example1.age)         # 34
 print(example1.is_single)   # False
 ```
+*NOTE*: An `__init__` method is automatically created similarly to `@dataclass`
 
 ## 🧊 Freeze mechanic
 
@@ -80,7 +79,7 @@ example1.name = "Norman Osborn"     # Raises an AttributeError, as value are imm
 
 ## 🔒 Preserve Methods
 
-In order to ensure Stash preserves individual and inherited class-methods utilise the `@conserve` decorator to explicitly define which methods require conservation.
+Utilise the `@conserve` decorator to explicitly mark methods for preservation in the new __slots__-based class. Individual methods NOT marked will not be present in new class.
 
 ```python
 from Stash import Stash, conserve
@@ -113,3 +112,22 @@ try:                            # Raises AttributeError: Instance has no atribut
 except AttributeError as e:
     print(f"Method missing {e}")
 ```
+
+## ⚙️ Advanced Usage
+* **Inheritance**: Preserved methods marked with `@conserve` are correctly inherited.
+* **Caching**: Stash automatically caches generated classes for improved performance.
+* **Interning**: Strin attributes are automatically interned to ensure memory efficiency.
+
+## 🧪 Testing
+Stash provides a full testing suite covering preservation, immutability, caching and general performance metrics. Run tests via:
+
+```python
+pytest
+```
+
+## 📜 Licensing
+This project is licensed under the MIT License - see the LICENSE section for furter details.
+
+## 👥 Collaboration
+If you have any suggestions for improvements, future extensions or simply wishes to help expand Stash's functionality further, please do not hesitate to reach out at:
+HysingerDev@gmail.com
