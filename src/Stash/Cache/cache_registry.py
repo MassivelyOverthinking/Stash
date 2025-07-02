@@ -23,7 +23,7 @@ class CacheManager():
     def __init__(self, MAX_CACHE_SIZE: int = 64, DEFAULT_TTL: float = 600.0):
         self.MAX_CACHE_SIZE = MAX_CACHE_SIZE
         self.DEFAULT_TTL = DEFAULT_TTL
-        self.cache: "OrderedDict[Any, CacheEntry]" = OrderedDict()
+        self.cache: OrderedDict[Any, CacheEntry] = OrderedDict()
         self.lock = threading.RLock()
 
     def _purge_expired(self) -> None:

@@ -21,7 +21,6 @@ def Stash(
     Args:
         Freeze (bool): If True, prevents attribute mutation after instantiation.
         Preserve (list[str]): List of individual methods preserved from teh original class.
-        Config (Optional[CacheConfig]): Optional configuration model for initialising caching functionality.
 
     Returns:
         Callable[[Type], Type]Dynamically creates a new class-object instead of initial class.
