@@ -1,6 +1,6 @@
 #-------------------- Imports --------------------
 
-from typing import Type, Callable, List
+from typing import Type, Callable
 
 from src.Stash.Classes import create_slots_cls
 from src.Stash.Cache import get_global_cache_manager

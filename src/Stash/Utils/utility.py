@@ -13,14 +13,14 @@ def check_metadata(source_cls: Type, target_cls: Type):
 
 
 def conserve_methods(source_cls: Type, target_cls: Type) -> None:
-    for attr_name in dir(source_cls):
-        attr = getattr(source_cls, attr_name)
-
-        func = attr
-        if isinstance(attr, (staticmethod, classmethod)):
-            func = attr.__func__
-        if getattr(func, "_conserve", False):
-            setattr(target_cls, attr_name, attr)
+    for base_cls in reversed(source_cls.__mro__):
+        for attr_name in dir(base_cls):
+            attr = getattr(base_cls, attr_name)
+            func = attr
+            if isinstance(attr, (staticmethod, classmethod)):
+                func = attr.__func__
+            if getattr(func, "_conserve", False):
+                setattr(target_cls, attr_name, attr)
 
 
 def get_annotations(cls: Type) -> List[FieldInfo]:

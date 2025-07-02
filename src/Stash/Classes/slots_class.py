@@ -9,7 +9,7 @@ def create_slots_cls(cls: Type, freeze: bool) -> Type:
     fields_info = get_annotations(cls)
     slot_names = [field.value_name for field in fields_info]
 
-    class_dict = {"__slots__": tuple(slot_names + (["_frozen"] if freeze else []))}
+    class_dict = {"__slots__": tuple(slot_names) + (("_frozen",) if freeze else ())}
 
     for field in fields_info:
         if field.has_default:
