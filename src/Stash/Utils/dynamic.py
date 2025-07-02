@@ -1,7 +1,7 @@
 #-------------------- Imports --------------------
 
 from typing import List, Callable
-from src.Stash.Classes import FieldInfo
+from src.Stash.Classes.fieldinfo import FieldInfo
 from src.Stash.Errors import FreezeAttributeException
 import sys
 
