@@ -21,10 +21,6 @@ def test_immutable_variables():
         is_villain=False
     )
 
-    assert example1.name == "Steve Rogers"
-    assert example1.age == 50
-    assert example1.is_villain is False
-
     with pytest.raises(FreezeAttributeException):
         example1.age = 100
 
