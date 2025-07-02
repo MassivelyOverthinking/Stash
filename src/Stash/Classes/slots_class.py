@@ -26,6 +26,15 @@ def create_slots_cls(cls: Type, freeze: bool) -> Type:
             continue
         if key in slot_names:
             continue
+        
+        if callable(value):
+            func = value
+        
+            if isinstance(value, (staticmethod, classmethod)):
+                func = value.__func__
+            if not getattr(func, "_conserve", False):
+                continue
+
         class_dict[key] = value
 
     new_class = type(cls.__name__, cls.__bases__, class_dict)
