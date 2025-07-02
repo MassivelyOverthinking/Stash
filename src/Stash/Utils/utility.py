@@ -2,7 +2,6 @@
 
 from typing import Type, List
 from src.Stash.Classes import FieldInfo
-from src.Stash.main import conserve
 
 #-------------------- Utility Functions --------------------
 
