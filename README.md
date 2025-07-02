@@ -58,7 +58,7 @@ print(example1.is_single)   # False
 
 ## 🧊 Freeze mechanic
 
-Stash also supports immutability by disabling modifications to instance attributes after initialization. By setting `freeze=True`, individual instances become read-only. Any attempts to odify or change attributes raises and `AttributeError`.
+Stash also supports immutability by disabling modifications to instance attributes after initialization. By setting `freeze=True`, individual instances become read-only. Any attempts to modify or change attributes raises and `AttributeError`.
 
 ```python
 from Stash import Stash
@@ -76,4 +76,36 @@ example1 = Example(
 )
 
 example1.name = "Norman Osborn"     # Raises an AttributeError, as value are immutable.
+```
+
+## 🔒 Preserve Methods
+
+In order to ensure Stash preserves individual and inherited class-methods utilise the `@conserve` decorator to explicitly define which methods require conservation.
+
+```python
+from Stash import Stash, conserve
+
+@Stash
+class Example():
+    name: str
+    age: int
+    is_superhero: bool
+
+    # Method is preserved
+    @conserve
+    def smash(self):
+        print(f"{self.name} SMASH!")
+
+    # Method is NOT preserved, due to lack of @conserve-decorator
+    def surrender(self):     
+        print(f"{self.name} surrenders!")
+
+example1 = Example(
+    name="Bruce Banner",
+    age=39,
+    is_superhero=True
+)
+
+example1.smash()        # Succesfully runs and prints message
+example1.surrender()    # Does not exist as method wasn't preserved when creating new class.
 ```

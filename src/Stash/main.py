@@ -12,7 +12,7 @@ def Stash(
     ) -> Callable[[Type], Type]:
 
     """
-    A Python class-decorator designed for memory optimization by dynamically generating a __slots__-bassed class.
+    A Python class-decorator designed for memory optimization by dynamically generating a __slots__-based class.
 
     Decorator reduces general memory overhead by eliminating __dict__,
     and automatically generating __init__, __repr__, __eq__ methods.
@@ -57,6 +57,22 @@ def Stash(
 #-------------------- Conserve Decorator --------------------
 
 def conserve(method: Callable) -> Callable:
+    """
+    Method-decorator used to define class-functions that @Stash is required to preserve.
+
+    Used in conjuction with @Stash class-decorator in order to explicitly define which functions
+    require preservation.
+
+    Args:
+        @conserve requires no arguments.
+
+    Returns:
+        Callable: Preserves individual class-methods in the new __slots__-based class.
+
+    Exceptions:
+        No exceptions are currently raised. 
+    """
+
     if isinstance(method, (staticmethod, classmethod)):
         func = method.__func__
         setattr(func, "_conserve", True)
