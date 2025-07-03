@@ -11,6 +11,18 @@
 Stash is a '__slots__'-based Python class-decorator developed to assist Python developers in 
 significantly reducing memory overhead when initiating individual classes. It dynamically creates a new optimised class with necessary dunder-methods behind the scene (__init__, __repr__, __eq__), and also add user-specified methods to ensure custom functionality. The application also supports immutability through 'Freeze' parameter, disabling user's ability to set attribute values post-initialisation for better memory efficiency.
 
+## ❓ Why use Stash?
+
+Python's default class instances store attributes in a `__dict__`, which provides general flexibility but at the cost of significant memory overhead - Especially when constructing large numbers of objects. Stash helps to eliminate this fact by replacing this traditional memory storage with `__slots__` resulting in:
+* ⚡ **Lower Memory Usage**: Substantially reduces per-instance memory overhead.
+* 🚀 **Faster Attribute Access**: Slots-based storage supports faster lookup than ordinary `__dict__`.
+* 🔐 **Optional Immutability**: Prevents unintended mutations by freezing attributes post-init.
+* 🧼 **Clean API**: Less boilerplate code as `Stash` automatically generates `__init__`, `__repr__`, `__eq__`.
+* 🧩 **Selective Method Preservation**: Use `@conserve` to explicitly preserve methods - only keep what's essential.
+* 🧠 **Better for Large Datasets**: Ideal for performance-critical applicattion like data science, simulations, and high-volume APIs.
+
+**Stash is designed to help you write lean, efficient and Pythonic code**
+
 ## 📋 Key Features
 * 🎁 Simple-to-use Python class decorator for memory optimisation.
 * 🛠️ Dynamically creates __slots__-based classes to minimize memory overhead.
@@ -116,7 +128,7 @@ except AttributeError as e:
 ## ⚙️ Advanced Usage
 * **Inheritance**: Preserved methods marked with `@conserve` are correctly inherited.
 * **Caching**: Stash automatically caches generated classes for improved performance.
-* **Interning**: Strin attributes are automatically interned to ensure memory efficiency.
+* **Interning**: String attributes are automatically interned to ensure memory efficiency.
 
 ## 🧪 Testing
 Stash provides a full testing suite covering preservation, immutability, caching and general performance metrics. Run tests via:
