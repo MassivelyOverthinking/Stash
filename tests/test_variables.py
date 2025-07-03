@@ -1,6 +1,6 @@
 #-------------------- Imports --------------------
 
-from src.Stash import Stash
+from src.stash import Stash
 
 import pytest
 

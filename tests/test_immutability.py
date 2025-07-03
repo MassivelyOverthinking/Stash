@@ -1,7 +1,7 @@
 #-------------------- Imports --------------------
 
-from src.Stash import Stash
-from src.Stash.Errors.exceptions import FreezeAttributeException
+from src.stash import Stash
+from src.stash.errors.exceptions import FreezeAttributeException
 
 import pytest
 
