@@ -50,9 +50,9 @@ conda install Stash
 from Stash import Stash
 
 @Stash
-class Example():
+class Example:
     name: str
-    age: 
+    age: int
     is_single: bool
 
 example1 = Example(
@@ -69,13 +69,13 @@ print(example1.is_single)   # False
 
 ## 🧊 Freeze mechanic
 
-Stash also supports immutability by disabling modifications to instance attributes after initialization. By setting `freeze=True`, individual instances become read-only. Any attempts to modify or change attributes raises and `AttributeError`.
+Stash also supports immutability by disabling modifications to instance attributes after initialization. By setting `freeze=True`, individual instances become read-only. Any attempts to modify or change attributes raises an `AttributeError`.
 
 ```python
 from Stash import Stash
 
 @Stash(freeze=True)
-class Example():
+class Example:
     name: str
     age: int
     is_villain: bool
@@ -86,7 +86,7 @@ example1 = Example(
     is_villain=True
 )
 
-example1.name = "Norman Osborn"     # Raises an AttributeError, as value are immutable.
+example1.name = "Norman Osborn"     # Raises an AttributeError, as values are immutable.
 ```
 
 ## 🔒 Preserve Methods
@@ -97,7 +97,7 @@ Utilise the `@conserve` decorator to explicitly mark methods for preservation in
 from Stash import Stash, conserve
 
 @Stash
-class Example():
+class Example:
     name: str
     age: int
     is_superhero: bool
@@ -117,13 +117,32 @@ example1 = Example(
     is_superhero=True
 )
 
-example1.smash()                # Succesfully runs and prints message
+example1.smash()                # Successfully runs and prints message.
 
 try:                            # Raises AttributeError: Instance has no atribute 'surrender'
     example1.surrender()
 except AttributeError as e:
     print(f"Method missing {e}")
 ```
+
+---
+
+## 📈 Benchmark Results
+
+To validate Stash's memory optimisation, I performed a benchmark test utilising a `@Stash` decorated class against a standard Python class using `tracemalloc`.
+
+### 🧪 Test Setup
+* **Test**: Instantiating 10,000 objects with 3 attributes.
+* **Compared**:
+    * ✅ `RegularClass` - Traditional class utilising `__dict__` for attribute storage.
+    * ✅ `StashClass` - Optimised class using `@Stash`
+* **Tool**: `tracemalloc` for memory tracking.
+
+### 💡 Results Snapshot
+| **Class Type** | **Traced Allocation** | **Avg. per Allocation** | **Notes**                                         |
+|----------------|-----------------------|-------------------------|---------------------------------------------------|
+| `RegularClass` | 10000                 | 150 - 200 B (estimate)  | Includes instance + Attribute allocation          |
+| `StashClass`   | 10000                 | 50 - 60 B (estimate)    | Memory reused or not allocated due to `__slots__` |
 
 ## ⚙️ Advanced Usage
 * **Inheritance**: Preserved methods marked with `@conserve` are correctly inherited.
