@@ -1,7 +1,7 @@
 #-------------------- Imports --------------------
 
 from typing import Type
-from src.Stash.Utils import check_metadata, get_annotations, create_init, create_repr, create_eq, create_frozen_setattr, conserve_methods
+from ..utils import check_metadata, get_annotations, create_init, create_repr, create_eq, create_frozen_setattr, conserve_methods
 
 #-------------------- Slots Class (Mutable) --------------------
 

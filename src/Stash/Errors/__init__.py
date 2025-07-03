@@ -1,6 +1,6 @@
 #-------------------- Imports --------------------
 
-from src.Stash.Errors.exceptions import FreezeAttributeException
+from .exceptions import FreezeAttributeException
 
 #-------------------- Package Management --------------------
 

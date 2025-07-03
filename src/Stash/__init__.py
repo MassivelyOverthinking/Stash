@@ -1,6 +1,6 @@
 #-------------------- Imports --------------------
 
-from src.Stash.main import Stash, conserve
+from .main import Stash, conserve
 
 #-------------------- Package Management --------------------
 

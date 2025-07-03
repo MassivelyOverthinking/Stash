@@ -1,8 +1,8 @@
 #-------------------- Imports --------------------
 
 from typing import List, Callable
-from src.Stash.Classes.fieldinfo import FieldInfo
-from src.Stash.Errors import FreezeAttributeException
+from ..classes.fieldinfo import FieldInfo
+from ..errors import FreezeAttributeException
 import sys
 
 #-------------------- Dynamic Method Creation --------------------

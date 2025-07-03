@@ -1,7 +1,7 @@
 #-------------------- Imports --------------------
 
 from typing import Type, List
-from src.Stash.Classes.fieldinfo import FieldInfo
+from ..classes.fieldinfo import FieldInfo
 
 #-------------------- Utility Functions --------------------
 

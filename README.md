@@ -38,11 +38,11 @@ Python's default class instances store attributes in a `__dict__`, which provide
 
 Install Stash using your preferred Package Manager.
 ```bash
-pip install Stash
+pip install stash-memory
 # or
-poetry add Stash
+poetry add stash-memory
 # or
-conda install Stash 
+conda install stash-memory
 ```
 
 ## #️⃣ Quickstart Example

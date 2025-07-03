@@ -1,6 +1,6 @@
 #-------------------- Imports --------------------
 
-from src.Stash.Classes.slots_class import create_slots_cls
+from .slots_class import create_slots_cls
 
 #-------------------- Package Management --------------------
 

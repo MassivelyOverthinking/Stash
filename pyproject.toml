@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "stash"
+name = "stash-memory"
 version = "0.0.1"
 description = "A memory optimization tool designed to lessen Python class overhead"
 readme = { file = "README.md", content-type = "text/markdown" }
@@ -24,7 +24,7 @@ keywords = [
     "freeze",
     "immutability",
     "interning",
-    "lightweigh classes"
+    "lightweight classes"
 ]
 
 classifiers = [

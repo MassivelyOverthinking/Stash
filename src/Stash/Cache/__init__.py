@@ -1,6 +1,6 @@
 #-------------------- Imports --------------------
 
-from src.Stash.Cache.cache_registry import get_global_cache_manager
+from .cache_registry import get_global_cache_manager
 
 #-------------------- Package Management --------------------
 

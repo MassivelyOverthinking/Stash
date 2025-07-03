@@ -1,7 +1,7 @@
 #-------------------- Imports --------------------
 
-from src.Stash.Utils.utility import check_metadata, get_annotations, conserve_methods
-from src.Stash.Utils.dynamic import create_init, create_repr, create_eq, create_frozen_setattr
+from .utility import check_metadata, get_annotations, conserve_methods
+from .dynamic import create_init, create_repr, create_eq, create_frozen_setattr
 
 
 #-------------------- Package Management --------------------
