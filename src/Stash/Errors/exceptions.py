@@ -9,11 +9,3 @@ class FreezeAttributeException(AttributeError):
         super().__init__(message)
         self.name = name
         self.obj = obj
-        
-class MethodPreservationException(Exception):
-    def __init__(self, message=None, *, name=None, obj=None):
-        if message is None:
-            message = f"Preserved method {name} not found or conflicting with inherited method"
-        super().__init__(message)
-        self.name = name
-        self.obj = obj

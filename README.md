@@ -9,17 +9,18 @@
 ## What is Stash?
 
 Stash is a '__slots__'-based Python class-decorator developed to assist Python developers in 
-significantly reducing memory overhead when initiating individual classes. It dynamically creates a new optimised class with necessary dunder-methods behind the scene (__init__, __repr__, __eq__), and also add user-specified methods to ensure custom functionality. The application also supports immutability through 'Freeze' parameter, disabling user's ability to set attribute values post-initialisation for better memory efficiency.
+significantly reducing memory overhead when initiating individual classes. It dynamically creates a new optimised class with necessary dunder-methods behind the scene (__init__, __repr__, __eq__), and also adds user-specified methods to ensure custom functionality. The application also supports immutability through 'Freeze' parameter, disabling user's ability to set attribute values post-initialisation for better memory efficiency.
 
 ## ❓ Why use Stash?
 
 Python's default class instances store attributes in a `__dict__`, which provides general flexibility but at the cost of significant memory overhead - Especially when constructing large numbers of objects. Stash helps to eliminate this fact by replacing this traditional memory storage with `__slots__` resulting in:
+
 * ⚡ **Lower Memory Usage**: Substantially reduces per-instance memory overhead.
 * 🚀 **Faster Attribute Access**: Slots-based storage supports faster lookup than ordinary `__dict__`.
 * 🔐 **Optional Immutability**: Prevents unintended mutations by freezing attributes post-init.
 * 🧼 **Clean API**: Less boilerplate code as `Stash` automatically generates `__init__`, `__repr__`, `__eq__`.
 * 🧩 **Selective Method Preservation**: Use `@conserve` to explicitly preserve methods - only keep what's essential.
-* 🧠 **Better for Large Datasets**: Ideal for performance-critical applicattion like data science, simulations, and high-volume APIs.
+* 🧠 **Better for Large Datasets**: Ideal for performance-critical application like data science, simulations, and high-volume APIs.
 
 **Stash is designed to help you write lean, efficient and Pythonic code**
 
@@ -136,13 +137,16 @@ To validate Stash's memory optimisation, I performed a benchmark test utilising 
 * **Compared**:
     * ✅ `RegularClass` - Traditional class utilising `__dict__` for attribute storage.
     * ✅ `StashClass` - Optimised class using `@Stash`
-* **Tool**: `tracemalloc` for memory tracking.
+* **Tool**: `tracemalloc`, `sys.getsizeof`, `pympler.asizeof` for memory tracking.
 
-### 💡 Results Snapshot
-| **Class Type** | **Traced Allocation** | **Avg. per Allocation** | **Notes**                                         |
-|----------------|-----------------------|-------------------------|---------------------------------------------------|
-| `RegularClass` | 10000                 | 150 - 200 B (estimate)  | Includes instance + Attribute allocation          |
-| `StashClass`   | 10000                 | 50 - 60 B (estimate)    | Memory reused or not allocated due to `__slots__` |
+### 💡 Results Summary
+
+| **Measurement**                       | **RegularClass** | **StashClass** | **Notes**                                                 |
+|---------------------------------------|------------------|----------------|-----------------------------------------------------------|
+| Total memory used (Tracemalloc)       | 1.5 MiB          | 1.5 MiB        | Snapshot difference for 10,000 instances                  |
+| Avg. memory per instance              | 154 B            | 155 B          | Similar values, but granularity might affect final result |
+| Shallow object size (`sys.getsizeof`) | 48 B             | 65 B           | Memory size of instance container only                    |
+| Deep object size (`pympler.asizeof`)  | 360 B            | 168 B          | Includes all attributes: Stash saves >50% memory          |
 
 ## ⚙️ Advanced Usage
 * **Inheritance**: Preserved methods marked with `@conserve` are correctly inherited.
@@ -157,7 +161,7 @@ pytest
 ```
 
 ## 📜 Licensing
-This project is licensed under the MIT License - see the LICENSE section for furter details.
+This project is licensed under the MIT License - see the LICENSE section for further details.
 
 ## 👥 Collaboration
 If you have any suggestions for improvements to the codebase, future app extensions or you simply wish to help expand Stash's functionality further, please do not hesitate to reach out at: `HysingerDev@gmail.com`
