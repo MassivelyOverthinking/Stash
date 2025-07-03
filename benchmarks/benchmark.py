@@ -16,16 +16,15 @@ class StashClass():
     age: int
     is_active: bool
 
-def instanate_regular():
+def instantiate_regular():
     return [RegularClass(f"Name{i}", i % 100, i % 2 == 0) for i in range(10000)]
 
 def instantiate_stash():
     return [StashClass(f"Name{i}", i % 100, i % 2 == 0) for i in range(10000)]
 
-def print_head(snapshot: tracemalloc.Snapshot, key_type="lineno", limit=10):
-    top_stats = snapshot.statistics(key_type)
+def print_head(stats: list, limit=10):
     print(f"Top memory lines - {limit}")
-    for st in top_stats[:limit]:
+    for st in stats[:limit]:
         print(st)
 
 def run_benchmark():
@@ -33,7 +32,7 @@ def run_benchmark():
     gc.collect()
 
     snap_before = tracemalloc.take_snapshot()
-    regular_instances = instanate_regular()
+    regular_instances = instantiate_regular()
     snap_after_regular = tracemalloc.take_snapshot()
 
     gc.collect()
@@ -46,7 +45,7 @@ def run_benchmark():
     print_head(stats_regular)
 
     print("\nMemory used by Stash class instances:")
-    stats_stash = snap_after_stash.compare_to(snap_after_stash, "filename")
+    stats_stash = snap_before.compare_to(snap_after_stash, "filename")
     print_head(stats_stash)
 
     tracemalloc.stop()
