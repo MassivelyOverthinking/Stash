@@ -129,5 +129,4 @@ pytest
 This project is licensed under the MIT License - see the LICENSE section for furter details.
 
 ## 👥 Collaboration
-If you have any suggestions for improvements, future extensions or simply wishes to help expand Stash's functionality further, please do not hesitate to reach out at:
-HysingerDev@gmail.com
+If you have any suggestions for improvements to the codebase, future app extensions or you simply wish to help expand Stash's functionality further, please do not hesitate to reach out at: `HysingerDev@gmail.com`
