@@ -58,7 +58,7 @@ dev = [
 ]
 
 [project.urls]
-Homepage = ""
-Documentation = ""
-Source = ""
-Issues = ""
+Homepage = "https://github.com/MassivelyOverthinking/Stash"
+Documentation = "https://github.com/MassivelyOverthinking/Stash"
+Source = "https://github.com/MassivelyOverthinking/Stash"
+Issues = "https://github.com/MassivelyOverthinking/Stash"
